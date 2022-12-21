@@ -861,6 +861,7 @@ void CFHD_Transcoder::open_output(CliOptions *cliopt)
             if (ist->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
             {
                 ofmt_ctx->oformat->audio_codec = ist->codecpar->codec_id;
+                ost->codecpar->codec_tag = av_codec_get_tag(ofmt_ctx->oformat->codec_tag, ist->codecpar->codec_id);
                 if (! ost->codecpar->channel_layout)
                     guess_channel_layout(ost, i);
             }
