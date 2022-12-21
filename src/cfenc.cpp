@@ -35,10 +35,8 @@ extern "C"
 #include <cineformsdk/CFHDMetadata.h>
 #include <cineformsdk/ver.h>
 
-#ifdef __linux__
-    #undef av_err2str
-    #define av_err2str(errnum) av_make_error_string((char*)__builtin_alloca(AV_ERROR_MAX_STRING_SIZE), AV_ERROR_MAX_STRING_SIZE, errnum)
-#endif
+#undef av_err2str
+#define av_err2str(errnum) av_make_error_string((char*)__builtin_alloca(AV_ERROR_MAX_STRING_SIZE), AV_ERROR_MAX_STRING_SIZE, errnum)
 
 int g_width;
 int g_height;
