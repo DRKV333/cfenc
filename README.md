@@ -67,15 +67,25 @@ I have no plans to provide a build process for Windows; however folks on Doom9 h
 
 **BUILD INSTRUCTIONS**
 
-You need FFmpeg 4.x installed with the usual av libraries (avformat, avcodec, etc) -- and compiled with support for formats and codecs that you want to work with cfenc.  You also need the include header files for the av libraries.  For example, on Ubuntu, you need to install avformat-dev, avcodec-dev, avutil-dev, and swscale-dev.  On a Mac, installing FFmpeg with brew installs everything you need.
+You need FFmpeg 4.x (up to 4.3) (4.4 does not work) installed with the usual av libraries (avformat, avcodec, etc) -- and compiled with support for formats and codecs that you want to work with cfenc.  You also need the include header files for the av libraries.  For example, on Ubuntu, you need to install avformat-dev, avcodec-dev, avutil-dev, and swscale-dev.  On a Mac, installing FFmpeg with brew installs everything you need.
+
+For a minimal working setup, that can receive video data from a pipe, and encode it to file, use:
+```
+./configure --disable-static --enable-shared --disable-doc --disable-everything --disable-autodetect --enable-decoder=rawvideo --enable-encoder=v210 --enable-demuxer=nut --enable-protocol=pipe,file --enable-muxer=mov,avi --prefix=/ffmpeg/prefix/path/here
+```
 
 You need to build and install the Cineform SDK from https://github.com/gopro/cineform-sdk.  Specifically you need libCFHDCodec.a and the include header files (and you'll get both by building/installing the SDK).  On Ubuntu, I needed to install uuid-dev as a prereq for the SDK (I don't think that is documented).
+
+Build with:
+```
+cmake -DBUILD_STATIC=OFF -DBUILD_SEPARATED=OFF --install-prefix /CFHD/prefix/path/here ..
+```
 
 Then download this repo and in the repo dir...
 ```
 mkdir build
 cd build
-cmake ..
+cmake -DFFMPEG_ROOT=/ffmpeg/prefix/path/here -DCFHD_ROOT=/CFHD/prefix/path/here ..
 make
 sudo make install
 ```
